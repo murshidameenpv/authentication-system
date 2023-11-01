@@ -16,9 +16,6 @@ app.use('/api/auth',authRouter)
 
 
 
-
-
-
 app.listen(port, () => {
         console.log(`Server Listening on port http://localhost:${port}`);
     })  
