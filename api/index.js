@@ -10,9 +10,8 @@ const port = process.env.PORT || 8001;
 
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }));
-
 app.use('/', userRouter)
-app.use('/api/auth', authRouter)
+app.use('/api/auth/', authRouter)
 
 
 app.use ((err, req, res, next) => {
@@ -22,7 +21,7 @@ app.use ((err, req, res, next) => {
         {
             success: false,
             message,
-          statusCode
+            statusCode: statusCode
         });
 }
 )
