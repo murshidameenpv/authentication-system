@@ -1,11 +1,12 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link,useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 export default function Signup() {
     const [formData, setFormData] = useState({});
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(false)
+    const navigate = useNavigate()
     const handleChange = (e) => {
         //Spread operator to keep previous value of form data
         setFormData({...formData,[e.target.id]:e.target.value})
@@ -19,6 +20,7 @@ export default function Signup() {
         try {
             const res = await axios.post('/api/auth/signup', formData);
             console.log(res.data);
+            navigate('/sign-in')
         } catch (err) {
             console.log(err);
             setError(true)
@@ -39,7 +41,7 @@ export default function Signup() {
             {loading && <p>Loading...</p>}
             <div className="font-light justify-center flex gap-4 py-2">
                 <p>Have an account?</p>
-                <Link to='sign-in'>
+                <Link to='/sign-in'>
                 <span className="text-blue-500">Sign In</span>
                 </Link>
             </div>
