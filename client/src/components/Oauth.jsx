@@ -14,7 +14,6 @@ export default function Oauth() {
                 email: result.user.email,
                 image:result.user.photoURL,
             })
-            console.log(res.data);
             dispatch(signInSuccess(res.data))
         
         } catch (error) {
