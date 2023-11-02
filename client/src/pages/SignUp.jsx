@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Link,useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import Oauth from '../components/Oauth';
 
 export default function Signup() {
     const [formData, setFormData] = useState({});
@@ -19,7 +20,7 @@ export default function Signup() {
             setError(false)
         try {
             const res = await axios.post('/api/auth/signup', formData);
-            console.log(res.data);
+            console.log(res);
             navigate('/sign-in')
         } catch (err) {
             console.log(err);
@@ -37,6 +38,7 @@ export default function Signup() {
                 <input type="email" placeholder="Email" id="email" className="bg-slate-100 p-3 rounded-lg" onChange={handleChange}/>
                 <input type="password" placeholder="Password" id="password" className="bg-slate-100 p-3 rounded-lg" onChange={handleChange}/>
                 <button disabled={loading} className="bg-slate-700 text-white rounded-lg p-3 uppercase hover:opacity-90 disabled:opacity-70">Sign Up</button>
+                <Oauth />
             </form>
             {loading && <p>Loading...</p>}
             <div className="font-light justify-center flex gap-4 py-2">

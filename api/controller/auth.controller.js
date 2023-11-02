@@ -45,3 +45,33 @@ export const signIn = async (req, res,next) => {
         next(err)
     }
 }
+
+export const googleSignIn = async (req, res, next) => {
+    try {
+        let user = await userDb.findOne({ email: req.body.email });
+
+        if (!user) {
+            // If the user doesn't exist, create a new one
+            const generatePassword = Math.random().toString(36).slice(-8);
+            const hashedPassword = bcryptjs.hashSync(generatePassword, 10);
+            user = new userDb({
+                name: req.body.name.split(" ").join("").toLowerCase() + (Math.floor(Math.random() * 10000)).toString(),
+                password: hashedPassword,
+                email: req.body.email,
+                profileImage: req.body.image,
+            });
+            await user.save();
+        }
+
+        // Create JWT, remove password from user object, set cookie and send response
+        const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET);
+        const userToSend = user.toObject();
+        delete userToSend.password;
+        const expiryDate = new Date(Date.now() + 3600000);
+        res.cookie('access_token', token, { httpOnly: true, expires: expiryDate })
+            .status(200)
+            .json(userToSend);
+    } catch (error) {
+        console.log(error);
+    }
+};
