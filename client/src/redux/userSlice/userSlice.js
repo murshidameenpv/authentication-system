@@ -26,8 +26,20 @@ const userSlicer = createSlice({
         },
         updateFormData: (state, action) => {
             state.formData = action.payload;
+        },
+        updateUserStart: (state) => {
+            state.loading =true;
+        },
+        updateUserSuccess: (state, action) => {
+            state.currentUser = action.payload;
+            state.loading = false;
+            state.error = false;
+        },
+        updateUserError: (state, action) => {
+            state.loading = false;
+            state.error = action.payload;
         }
     }
 });
-export const { signInFailure, signInStart, signInSuccess,updateFormData } = userSlicer.actions;
+export const { signInFailure, signInStart, signInSuccess,updateFormData,updateUserError,updateUserSuccess,updateUserStart } = userSlicer.actions;
 export default userSlicer.reducer;

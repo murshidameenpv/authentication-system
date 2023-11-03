@@ -3,9 +3,10 @@ import { auth, provider } from '../services/firebase.js'
 import {signInWithPopup} from 'firebase/auth'
 import { useDispatch } from 'react-redux';
 import { signInSuccess } from '../redux/userSlice/userSlice.js';
-
+import {useNavigate} from 'react-router-dom'
 export default function Oauth() {
     const dispatch = useDispatch()
+    const navigate = useNavigate()
     const handleGoogleClick = async ()=>{
         try {
             const result = await signInWithPopup(auth, provider)
@@ -15,6 +16,7 @@ export default function Oauth() {
                 image:result.user.photoURL,
             })
             dispatch(signInSuccess(res.data))
+            navigate('/')
         
         } catch (error) {
             console.log(error);
