@@ -3,7 +3,7 @@ import { useRef, useState, useEffect } from "react";
 import { storage } from "../services/firebase";
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 import Axios from "axios";
-import {updateUserError,updateUserStart,updateUserSuccess,deleteUserError,deleteUserSuccess, deleteUserStart} from '../redux/userSlice/userSlice.js'
+import {updateUserError,updateUserStart,updateUserSuccess,deleteUserError,deleteUserSuccess, deleteUserStart,signOut} from '../redux/userSlice/userSlice.js'
 
 export default function Profile() {
   const { currentUser,loading,error } = useSelector((state) => state.user)
@@ -63,10 +63,20 @@ export default function Profile() {
     try {
       const res = await Axios.delete(`/api/user/delete/${currentUser._id}`)
       dispatch(deleteUserSuccess(res.data))
-      
+
     } catch (err) {
       console.log(err);
       dispatch(deleteUserError())
+    }
+  }
+
+  const handleSignOut =async  () => {
+    try {
+      await Axios.get('/api/auth/signout')
+      dispatch(signOut());
+
+    } catch (err) {
+      console.log(err);
     }
   }
   return (
@@ -94,7 +104,7 @@ export default function Profile() {
       {loading && <p>Loading...</p>}
       <div className="flex justify-between my-3">
         <span onClick={handleDelete} className="text-red-600 cursor-pointer">Delete account?</span>
-        <span className="text-red-600 cursor-pointer">Sign out</span>
+        <span onClick={handleSignOut} className="text-red-600 cursor-pointer">Sign out</span>
       </div>
        <div className='text-center'>
                 {error && <p className='text-red-700 animate-blink'>{error}</p>}
