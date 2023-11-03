@@ -39,7 +39,7 @@ export default function Profile() {
       <h1 className="text-3xl font-semibold text-center my-10">Profile</h1>
       <form className="flex flex-col gap-4">
         <input type="file" ref={fileRef} hidden accept="image/*" onChange={(e)=>setImage(e.target.files[0])}/>
-        <img src={currentUser.profileImage} alt="Profile Image"
+        <img src={formData.profileImage ||   currentUser.profileImage} alt="Profile Image"
           className="h-40 w-40 rounded-full self-center  cursor-pointer object-cover mt-2" onClick={()=>fileRef.current.click()}/>
         <p className="self-center text-sm">
           {imageError ? (<span className="text-red-700">Error uploading image</span>) :
